@@ -77,7 +77,9 @@ router.post('/login', validation(loginUserSchema), async (req, res) => {
 
     const token = jsonwebtoken.sign({ accountid: data[0].id }, jwtSecret)
     await connection.end()
-    return res.status(200).send({ msg: 'User successfully logged in.', token })
+    return res
+      .status(200)
+      .send({ msg: 'User successfully logged in.', token, data })
   } catch (err) {
     console.log(err)
     return res.status(500).send('Server issue.')

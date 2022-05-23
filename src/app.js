@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const { serverPort } = require('./config')
 const userRoutes = require('./routes/v1/users')
+const wineRoutes = require('./routes/v1/wines')
+const collectionRoutes = require('./routes/v1/collection')
 
 const app = express()
 app.use(express.json())
@@ -12,6 +14,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/v1/users', userRoutes)
+app.use('/v1/wine', wineRoutes)
+app.use('/v1/collections', collectionRoutes)
 
 app.all('*', (req, res) => {
   return res.status(400).send('Page not found...')
