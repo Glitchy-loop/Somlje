@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-// Get collection for user
+// Get collection by user id
 router.get('/my-wines/:id', isLoggedIn, async (req, res) => {
   try {
     const connection = await mysql.createConnection(mysqConfig)
