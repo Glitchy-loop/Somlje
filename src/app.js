@@ -18,7 +18,7 @@ app.use('/v1/wine', wineRoutes)
 app.use('/v1/collections', collectionRoutes)
 
 app.all('*', (req, res) => {
-  return res.status(400).send('Page not found...')
+  return res.status(404).send('Page not found...')
 })
 
 app.listen(serverPort, () =>

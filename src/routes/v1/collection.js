@@ -7,7 +7,7 @@ const addToCollectionSchema = require('../../middleware/schemas/collectionSchema
 const validation = require('../../middleware/validation')
 
 // Get all collections
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   try {
     const connection = await mysql.createConnection(mysqConfig)
     const [data] = await connection.execute(`
@@ -30,6 +30,11 @@ router.get('/my-wines/:id', isLoggedIn, async (req, res) => {
             SELECT * FROM collections
             WHERE user_id = ${mysql.escape(req.params.id)}
             `)
+
+    if (data.length === 0) {
+      await connection.end()
+      return res.status(400).send({ msg: 'No collections found.' })
+    }
 
     await connection.end()
     return res.status(200).send(data)
