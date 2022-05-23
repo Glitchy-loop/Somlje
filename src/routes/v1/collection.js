@@ -22,6 +22,23 @@ router.get('/', async (req, res) => {
   }
 })
 
+// Get collection for user
+router.get('/my-wines/:id', isLoggedIn, async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(mysqConfig)
+    const [data] = await connection.execute(`
+            SELECT * FROM collections
+            WHERE user_id = ${mysql.escape(req.params.id)}
+            `)
+
+    await connection.end()
+    return res.status(200).send(data)
+  } catch (err) {
+    console.log(err)
+    return res.status(500).send({ err: 'Server issue.' })
+  }
+})
+
 // Post new item to the collection
 router.post(
   '/my-wines/:id',

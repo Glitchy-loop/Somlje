@@ -7,4 +7,9 @@ const addToCollectionSchema = Joi.object({
   quantity: Joi.number().required()
 })
 
-module.exports = addToCollectionSchema
+const getUserWineCollectionSchema = Joi.object({
+  user_id: Joi.number().required(),
+  quantity: Joi.number().required()
+})
+
+module.exports = { addToCollectionSchema, getUserWineCollectionSchema }
