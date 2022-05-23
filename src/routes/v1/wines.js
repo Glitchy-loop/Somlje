@@ -3,15 +3,21 @@ const router = express.Router()
 const mysql = require('mysql2/promise')
 const { mysqConfig } = require('../../config')
 const isLoggedIn = require('../../middleware/auth')
-const addWineSchema = require('../../middleware/schemas/wineSchema')
+const {
+  addWineSchema,
+  getWinesSchema
+} = require('../../middleware/schemas/wineSchema')
 const validation = require('../../middleware/validation')
 
 // Get all wines
-router.get('/', async (req, res) => {
+router.get('/wines', validation(getWinesSchema), async (req, res) => {
   try {
     const connection = await mysql.createConnection(mysqConfig)
     const [data] = await connection.execute(`
         SELECT * FROM wines
+        LIMIT ${mysql.escape(Number(req.body.to))} OFFSET ${mysql.escape(
+      Number(req.body.from)
+    )}
         `)
 
     await connection.end()
@@ -40,7 +46,7 @@ router.post('/add', isLoggedIn, validation(addWineSchema), async (req, res) => {
     }
 
     await connection.end()
-    return res.status(200).send({ msg: 'Successfully added wine.' })
+    return res.status(200).send({ msg: 'Successfully added a wine.' })
   } catch (err) {
     return res.status(500).send({ err: 'Server issue.' })
   }
