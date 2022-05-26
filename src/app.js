@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('ok')
+  res.send('OK')
 })
 
 app.use('/v1/users', userRoutes)
